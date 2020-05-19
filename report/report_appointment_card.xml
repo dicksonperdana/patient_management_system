@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<template id="report_appointment_card_document">
+			<t t-call="report.html_container">
+				<t t-foreach="docs" t-as="o">
+					<div class="page">
+						<br></br>
+						<br></br>
+						<br></br>
+						<br></br>
+						<div class="center-block"
+							style="height: 260px; width: 430px; border: 1px solid black;">
+							<table>
+								<tbody>
+									<tr>
+										<td>
+										</td>
+										<td style="vertical-align: top;">
+											<div
+												style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; font-size:16px">
+												<b>
+													No Urut Kunjungan:
+<!--													<span t-field='o.appointment_id' />-->
+                                                    <h1 t-field='o.appointment_id'></h1>
+												</b>
+												<br></br>
+												<b>Klinik:</b>
+												<span t-field='o.clinic' />
+												<br></br>
+												<b>Dokter:</b>
+												<span t-field='o.doctor_id.name' />
+												<br></br>
+												<b>Tanggal :</b>
+												<span t-field='o.appointment_date' />
+												<br></br>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</t>
+			</t>
+		</template>
+
+		<template id="report_appointment_card">
+			<t t-call="report.html_container">
+				<t t-foreach="docs" t-as="o">
+					<t t-call="patient_management_system.report_appointment_card_document"/>
+				</t>
+			</t>
+		</template>
+	</data>
+</openerp>

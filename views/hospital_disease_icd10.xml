@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="icd10_tree" model="ir.ui.view">
+        <field name="name">hospital.icd10.tree</field>
+        <field name="model">hospital.icd10</field>
+        <field name="arch" type="xml">
+            <tree string="ICD-10 Library">
+                <field name="icd10_dx_id"></field>
+                <field name="description"></field>
+            </tree>
+        </field>
+    </record>
+    <!-- form view -->
+    <record id="icd10_form" model="ir.ui.view">
+        <field name="name">hospital.icd10.form</field>
+        <field name="model">hospital.icd10</field>
+        <field name="arch" type="xml">
+            <form string="ICD-10 Library">
+                <notebook>
+                    <page string="ICD 10">
+                        <group>
+                            <field name="icd10_dx_id"/>
+                            <field name="description"/>
+                        </group>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <!-- data view -->
+    <record id="action_icd10" model="ir.actions.act_window">
+        <field name="name">ICD10</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.icd10</field>
+        <field name="view_type">form</field>
+        <field name="view_model">tree,form</field>
+    </record>
+    <menuitem id="hospital_icd10_record" name="ICD-10 Library" parent="menu_configuration" action="action_icd10"
+              sequence="0"/>
+</odoo>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="appointment_tree_queue" model="ir.ui.view">
+        <field name="name">hospital.appointment.queue.tree</field>
+        <field name="model">hospital.appointment</field>
+        <field name="arch" type="xml">
+            <tree string="Appointment">
+                <field name="appointment_id" string="No Urut"></field>
+                <field name="no_rm" string="Nomor Rekam Medis"></field>
+                <field name="patient_id" string="Pasien"></field>
+                <field name="appointment_date_registration"></field>
+                <field name="appointment_date_start"></field>
+                <field name="clinic"/>
+                <field name="state"/>
+                <field name="doctor_id" string="Dokter"/>
+                <field name="is_medical_record" string="Kunjungan Selesai"/>
+                <button name="open_medical_record" attrs="{'invisible':[('is_medical_record','=',True)]}" type="object"
+                        string="Visit"/>
+            </tree>
+        </field>
+    </record>
+    <!--    tree view-->
+    <record id="appointment_calendar_queue" model="ir.ui.view">
+        <field name="name">hospital.appointment.queue.calendar</field>
+        <field name="model">hospital.appointment</field>
+        <field name="arch" type="xml">
+            <calendar string="Appointment Calendar" quick_add="False"
+                      color="doctor_id" date_start="appointment_date_start" date_end="appointment_date_end">
+                <field name="appointment_id"/>
+                <field name="doctor_id"/>
+                <field name="clinic"/>
+                <field name="patient_id"/>
+            </calendar>
+        </field>
+    </record>
+    <!-- data view -->
+    <record id="action_appointment_queue" model="ir.actions.act_window">
+        <field name="name">Appointment Queue</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.appointment</field>
+        <field name="domain">[('doctor_id.user_id','=', uid),('state','=','confirm')]</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,calendar</field>
+    </record>
+    <record id="action_appointment_queue_nurse" model="ir.actions.act_window">
+        <field name="name">Appointment Queue</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.appointment</field>
+        <field name="domain">[('state','=','confirm')]</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,calendar</field>
+    </record>
+
+    <menuitem id="hospital_patient_appointment_queue" name="Kunjungan" parent="menu_hospital_appointment"
+              action="action_appointment_queue" sequence="1" groups="patient_management_system.doctor_group"/>
+
+    <menuitem id="hospital_patient_appointment_queue_nurse" name="Kunjungan (Perawat)" parent="menu_hospital_appointment"
+              action="open_appointment_queue_act_windows" sequence="2" groups="patient_management_system.nurse_group"/>
+</odoo>

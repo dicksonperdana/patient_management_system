@@ -1,0 +1,28 @@
+<odoo>
+    <record id="open_appointment_queue_form" model="ir.ui.view">
+        <field name="name">open.appointment.queue.wizard</field>
+        <field name="model">open.appointment.queue</field>
+        <field name="arch" type="xml">
+            <form string="Appointment Queue">
+                <group>
+                    <field name="clinic_transient"/>
+                    <field name="doctor_id_transient"/>
+                </group>
+                <footer>
+                    <button name="open_invoice_history"
+                            class="oe_highlight" string="Open Appointment"
+                            type="object"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="open_appointment_queue_act_windows" model="ir.actions.act_window">
+        <field name="name">Open Appointment Queue</field>
+        <field name="res_model">open.appointment.queue</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="open_appointment_queue_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

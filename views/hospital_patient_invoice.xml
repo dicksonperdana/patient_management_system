@@ -1,0 +1,18 @@
+<odoo>
+    <record id="hospital_cashier_invoice" model="ir.actions.server">
+            <field name="name">Cashier Invoices</field>
+            <field name="state">code</field>
+            <field name="model_id" ref="patient_management_system.model_hospital_cashier"/>
+            <field name="code">action = model.open_invoice()</field>
+    </record>
+
+    <record id="hospital_cashier_invoice_history" model="ir.actions.server">
+            <field name="name">Cashier Invoices</field>
+            <field name="state">code</field>
+            <field name="model_id" ref="patient_management_system.model_hospital_cashier"/>
+            <field name="code">action = model.open_invoice_history()</field>
+    </record>
+
+    <menuitem id="menu_patient_invoice_record" name="Tagihan" parent="menu_account_record" action="hospital_cashier_invoice"  sequence="1"/>
+    <menuitem id="menu_patient_invoice_history_record" name="Jejak Tagihan" parent="menu_account_record" action="hospital_cashier_invoice_history"  sequence="2"/>
+</odoo>

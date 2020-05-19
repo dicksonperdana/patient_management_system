@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_hospital_config" model="ir.ui.view">
+            <field name="name">hospital setting</field>
+            <field name="model">res.config.settings</field>
+            <field name="arch" type="xml">
+                <form string="Configuration" class= "oe_form_configuration">
+                    <header>
+                        <button string="Apply" type="object" name="execute" class="oe_highlight"/>
+                        <button string="Cancel" type="object" name="cancel" class="oe_link" special="cancel"/>
+                    </header>
+                    <group string="Clinic" name="clinic">
+                        <group>
+                            <field name="path_clinic"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_hospital_configuration" model="ir.actions.act_window">
+            <field name="name">Hospital Configuration</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+        </record>
+
+        <menuitem id="menu_hospital_config" name="Settings" parent="menu_configuration"
+            sequence="0" action="action_hospital_configuration"/>
+    </data>
+</odoo>

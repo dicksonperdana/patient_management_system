@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="outpatient_record_tree" model="ir.ui.view">
+        <field name="name">outpatient.record.tree</field>
+        <field name="model">outpatient.record</field>
+        <field name="arch" type="xml">
+            <tree string="Outpatient Medical Record">
+                <field name="mr_id"></field>
+                <!--                <field name="appointment_id"></field>-->
+                <field name="patient_id"></field>
+                <field name="no_rm"></field>
+                <field name="assessment_date"></field>
+                <field name="clinic"></field>
+                <field name="has_attachments"></field>
+                <field name="state"></field>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- form view -->
+    <record id="outpatient_record_form" model="ir.ui.view">
+        <field name="name">outpatient.record.form</field>
+        <field name="model">outpatient.record</field>
+        <field name="arch" type="xml">
+            <form string="Outpatient medical record">
+                <header>
+                    <button name="print_report" type="object"
+                            string="Print Medical Report" class="oe_highlight"/>
+                    <button name="action_done" type="object" string="Done" states="assessment"
+                            class="oe_highlight"></button>
+                    <button name="action_assessment" type="object" string="Assessment" states="draft"
+                            class="oe_highlight"></button>
+                    <button name="action_cancel" type="object" string="Cancel" states="draft"></button>
+                    <!--                 <button name="appointment_done" type="object" string="Appointment Done" states="done"></button>-->
+                    <button name="%(action_create_medical_invoice1)d" type="action" string="Create Invoice"
+                            class="oe_highlight" states="done" attrs="{'invisible': [('appointment_ids', '=', 0)]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,assessment,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <div class="oe_edit_only">
+                            <label for="mr_id"/>
+                        </div>
+                        <h1>
+                            <field style="width: 50%" name="patient_id"
+                                   default_focus="1" placeholder="Patient Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="assessment_date"/>
+                        </group>
+                        <group>
+                            <field name="patient_age"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="allergic_history"/>
+                        <field name="clinic"/>
+                    </group>
+                    <group>
+                        <group>
+                            <!--                            <field name="appointment_id" domain="[('appointment_id.state','=','confirm')]"/>-->
+                            <field name="appointment_ids" readonly="1"/>
+                            <field name="no_rm"/>
+                            <field name="birth_place"/>
+                            <field name="birth_date"/>
+                            <field name="sex"/>
+                            <field name="address"/>
+                        </group>
+                        <group>
+                            <field name="religion"/>
+                            <field name="suku"/>
+                            <field name="education"/>
+                            <field name="job_status"/>
+                            <field name="economic_status"/>
+                        </group>
+                    </group>
+                    <group string="Hasil Pemeriksaan Diagnostik">
+                        <field name="has_attachments" invisible="1"></field>
+                        <inline>
+                            <group>
+                                <label for="action_see_attachments" string="Dokumen"/>
+                                <div class="oe_left oe_button_box">
+                                    <button name="action_see_attachments" type="object" icon="fa-files-o"
+                                            attrs="{'invisible': [('has_attachments', '=', False)]}"/>
+                                    <button name="action_see_attachments" type="object" icon="fa-file"
+                                            attrs="{'invisible': [('has_attachments', '=', True)]}"/>
+                                </div>
+                            </group>
+                        </inline>
+                    </group>
+                    <group>
+                    </group>
+                    <notebook states="assessment,done">
+                        <page string="Nursing Assessment">
+                            <field name="nursing_assessment_line" string="Nursing Assessment History"
+                                   colspan='3' widget="one2many_list" limit="1">
+                                <tree>
+                                    <field name="nursing_assessment_id" string="Dokumen"/>
+                                    <field name="medical_record_id" invisible="1"/>
+                                    <field name="general_condition"/>
+                                </tree>
+                                <form>
+                                    <group string="Assessment Fisik dan Pemeriksaan">
+                                        <field name="general_condition"/>
+                                        <field name="consciousness"/>
+                                        <label for="glasgow_coma_scale_e" string="GCS"/>
+                                        <div col="1">
+                                            <field name="glasgow_coma_scale_e" class="oe_inline"/>
+                                            E
+                                            <field name="glasgow_coma_scale_m" class="oe_inline"/>
+                                            M
+                                            <field name="glasgow_coma_scale_v" class="oe_inline"/>
+                                            V
+                                        </div>
+                                    </group>
+                                    <group>
+                                        <label for="body_temperature" string="Suhu Badan"/>
+                                        <div>
+                                            <field name="body_temperature" class="oe_inline"/>
+                                            °C
+                                        </div>
+
+                                        <label for="blood_pressure" string="Tekanan Darah"/>
+                                        <div>
+                                            <field name="blood_pressure" class="oe_inline"/>
+                                            mmHg
+                                        </div>
+
+                                        <label for="vein" string="Denyut Nadi"/>
+                                        <div>
+                                            <field name="vein" class="oe_inline"/>
+                                            x/mnt
+                                        </div>
+
+                                        <label for="breath" string="Pernapasan"/>
+                                        <div>
+                                            <field name="breath" class="oe_inline"/>
+                                            x/mnt
+                                        </div>
+
+                                        <label for="patient_weight" string="Berat Badan"/>
+                                        <div>
+                                            <field name="patient_weight" class="oe_inline"/>
+                                            Kg
+                                        </div>
+
+                                        <label for="patient_height" string="Tinggi Badan"/>
+                                        <div>
+                                            <field name="patient_height" class="oe_inline"/>
+                                            Cm
+                                        </div>
+
+                                        <field name="pain" widget="selection"/>
+                                        <field name="provokatif" attrs="{'invisible': [('pain', '=', '2')]}"/>
+                                        <field name="quality" attrs="{'invisible': [('pain', '=', '2')]}"/>
+                                        <field name="region" attrs="{'invisible': [('pain', '=', '2')]}"/>
+                                        <field name="spread" attrs="{'invisible': [('pain', '=', '2')]}"/>
+                                        <field name="severity" attrs="{'invisible': [('pain', '=', '2')]}"/>
+                                        <field name="duration" attrs="{'invisible': [('pain', '=', '2')]}"/>
+                                        <field name="disapear_if" attrs="{'invisible': [('pain', '=', '2')]}"/>
+                                    </group>
+                                    <group>
+                                        <group string="Resiko Jatuh">
+                                            <field name="fall_risk"/>
+                                        </group>
+                                        <group string="Nutrisi">
+                                            <label for="bmi" string="BMI"/>
+                                            <div col="1">
+                                                <field name="bmi" class="oe_inline"/>
+                                                Kg/m²
+                                            </div>
+                                            <field name="head_circle"/>
+                                        </group>
+                                        <group string="Fungsional">
+                                            <field name="support_tools"/>
+                                            <field name="prothesis"/>
+                                            <field name="defect"/>
+                                            <field name="adl"/>
+                                        </group>
+                                    </group>
+                                    <group>
+                                        <field name="persarafan_line" widget="one2many" string="Persarafan">
+                                            <tree editable="bottom">
+                                                <field name="name_persarafan_line"/>
+                                                <field name="deskripsi_lanjut_persarafan"/>
+                                            </tree>
+                                            <form>
+                                                <group>
+                                                    <field name="name_persarafan_line" string="Deskripsi"/>
+                                                </group>
+                                            </form>
+                                        </field>
+                                        <field name="pernafasan_line" widget="one2many" string="Pernafasan">
+                                            <tree editable="bottom">
+                                                <field name="name_pernapasan_line"/>
+                                                <field name="deskripsi_lanjut_pernapasan"/>
+                                            </tree>
+                                            <form>
+                                                <group>
+                                                    <field name="name_pernapasan_line" string="Deskripsi"/>
+                                                </group>
+                                            </form>
+                                        </field>
+                                        <field name="pencernaan_line" widget="one2many" string="Pencernaan">
+                                            <tree editable="bottom">
+                                                <field name="name_pencernaan_line"/>
+                                                <field name="deskripsi_lanjut_pencernaan"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name_pencernaan_line" string="Deskripsi"/>
+                                            </form>
+                                        </field>
+                                        <field name="endorkin_line" widget="one2many" string="Endorkin">
+                                            <tree editable="bottom">
+                                                <field name="name_endorkin_line"/>
+                                                <field name="deskripsi_lanjut_endorkin"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name_endorkin_line" string="Deskripsi"/>
+                                            </form>
+                                        </field>
+                                        <field name="kardiovaskuler_line" widget="one2many" string="Kardiovaskuler">
+                                            <tree editable="bottom">
+                                                <field name="name_kardiovaskuler_line"/>
+                                                <field name="deskripsi_lanjut_kardiovaskuler"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name_kardiovaskuler_line" string="Deskripsi"/>
+                                            </form>
+                                        </field>
+                                        <field name="abdomen_line" widget="one2many" string="Abdomen">
+                                            <tree editable="bottom">
+                                                <field name="name_abdomen_line"/>
+                                                <field name="deskripsi_lanjut_abdomen"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name_abdomen_line" string="Deskripsi"/>
+                                            </form>
+                                        </field>
+                                        <field name="reproduksi_line" widget="one2many" string="Reproduksi">
+                                            <tree editable="bottom">
+                                                <field name="name_reproduksi_line"/>
+                                                <field name="deskripsi_lanjut_reproduksi"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name_reproduksi_line" string="Deskripsi"/>
+                                            </form>
+                                        </field>
+                                        <field name="kulit_line" widget="one2many" string="Kulit">
+                                            <tree editable="bottom">
+                                                <field name="name_kulit_line"/>
+                                                <field name="deskripsi_lanjut_kulit"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name_kulit_line" string="Deskripsi"/>
+                                            </form>
+                                        </field>
+                                        <field name="urinaria_line" widget="one2many" string="Urinaria">
+                                            <tree editable="bottom">
+                                                <field name="name_urinaria_line"/>
+                                                <field name="deskripsi_lanjut_urinaria"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name_urinaria_line" string="Deskripsi"/>
+                                            </form>
+                                        </field>
+                                        <field name="mata_line" widget="one2many" string="Mata">
+                                            <tree editable="bottom">
+                                                <field name="name_mata_line"/>
+                                                <field name="deskripsi_lanjut_mata"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name_mata_line" string="Deskripsi"/>
+                                            </form>
+                                        </field>
+                                        <field name="ost_line" widget="one2many" string="Otot, Sendi, dan Tulang">
+                                            <tree editable="bottom">
+                                                <field name="name_ost_line"/>
+                                                <field name="deskripsi_lanjut_ost"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name_ost_line" string="Deskripsi"/>
+                                            </form>
+                                        </field>
+                                        <field name="muka_line" widget="one2many" string="Muka dan Hidung">
+                                            <tree editable="bottom">
+                                                <field name="name_muka_line"/>
+                                                <field name="deskripsi_lanjut_muka"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name_muka_line" string="Deskripsi"/>
+                                            </form>
+                                        </field>
+                                        <field name="gigi_line" widget="one2many" string="Gigi">
+                                            <tree editable="bottom">
+                                                <field name="name_gigi_line"/>
+                                                <field name="deskripsi_lanjut_gigi"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name_gigi_line" string="Deskripsi"/>
+                                            </form>
+                                        </field>
+                                        <field name="telinga_line" widget="one2many" string="Telinga">
+                                            <tree editable="bottom">
+                                                <field name="name_telinga_line"/>
+                                                <field name="deskripsi_lanjut_telinga"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name_telinga_line" string="Deskripsi"/>
+                                            </form>
+                                        </field>
+                                        <field name="tenggorokan_line" widget="one2many" string="Tenggorokan">
+                                            <tree editable="bottom">
+                                                <field name="name_tenggorokan_line"/>
+                                                <field name="deskripsi_lanjut_tenggorokan"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name_tenggorokan_line" string="Deskripsi"/>
+                                            </form>
+                                        </field>
+                                        <field name="emosional_line" widget="one2many" string="Emosional">
+                                            <tree editable="bottom">
+                                                <field name="name_emosional_line"/>
+                                                <field name="deskripsi_lanjut_emosional"/>
+                                            </tree>
+                                            <form>
+                                                <field name="name_emosional_line" string="Deskripsi"/>
+                                            </form>
+                                        </field>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+
+                        <page string="Doctor Assessment">
+                            <field name="doctor_assessment_line" string="Doctor Assessment History"
+                                   colspan='3' widget="one2many_list" limit="1">
+                                <tree>
+                                    <field name="doctor_assessment_id" string="Dokumen"/>
+                                    <field name="main_complaint" string="Deskripsi"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                    </group>
+                                    <group string="Keluhan">
+                                        <field name="main_complaint"/>
+                                        <field name="disease_history"/>
+                                    </group>
+                                    <group string="Pemeriksaan Fisik">
+                                        <field name="physical_examination"/>
+                                        <field name="status_lokalis"/>
+                                    </group>
+                                    <group string="Pemeriksaan Penunjang">
+                                        <field name="support_checkup"/>
+                                    </group>
+                                    <group string="Diagnosis dan Tindakan">
+                                        <field name="medical_diagnose_line_ids" widget="one2many">
+                                            <tree editable="bottom">
+                                                <field name="diagnose_icd10"/>
+                                                <field name="description_icd10"/>
+                                                <field name="type_service_icd10"/>
+                                            </tree>
+                                            <form>
+                                                <field name="diagnose_icd10"/>
+                                                <field name="description_icd10"/>
+                                                <field name="type_service_icd10"/>
+                                            </form>
+                                        </field>
+                                        <field name="medical_service_line_ids" widget="one2many">
+                                            <tree editable="bottom">
+                                                <field name="service_icd9"/>
+                                                <field name="description_icd9"/>
+                                                <field name="type_service_icd9"/>
+                                            </tree>
+                                            <form>
+                                                <field name="service_icd9"/>
+                                                <field name="description_icd9"/>
+                                                <field name="type_service_icd9"/>
+                                            </form>
+                                        </field>
+                                    </group>
+                                    <group string="Rencana">
+                                        <field name="therapy">
+                                            <tree editable="bottom">
+                                                <field name="product_id"/>
+                                                <field name="dosage"/>
+                                                <field name="presentation"/>
+                                            </tree>
+                                            <form>
+                                                <group>
+                                                    <field name="product_id"/>
+                                                    <field name="dosage"/>
+                                                    <field name="presentation"/>
+                                                </group>
+                                            </form>
+                                        </field>
+                                        <field name="consultation"/>
+                                        <field name="refer"/>
+                                    </group>
+                                    <group string="Penanganan">
+                                        <field name="patient_handling"/>
+                                    </group>
+                                    <group string="Tanda Tangan">
+                                        <field name="user_id" widget="Dokter"/>
+                                        <field name="is_signature" widget="signature"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- data view -->
+    <record id="action_outpatient_record" model="ir.actions.act_window">
+        <field name="name">Outpatient Medical Record</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">outpatient.record</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create First medical record!
+            </p>
+        </field>
+<!--        Kanban View-->
+    </record>
+    <menuitem id="hospital_outpatient_record" name="Outpatient Medical Record" parent="menu_patients_medical_record"
+              action="action_outpatient_record" sequence="0"/>
+</odoo>

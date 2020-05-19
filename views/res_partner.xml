@@ -1,0 +1,24 @@
+<odoo>
+     <data>
+        <record id="res_partner_inherit_hms" model="ir.ui.view">
+            <field name="name">res.partner.hms</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <notebook>
+                    <page string="Medical Category">
+                        <group colspan="2" col="2">
+                            <field name="patient" />
+                            <field name="person" />
+                        </group>
+                    </page>
+                    <page string="Document Perjanjian">
+                        <group colspan="2" col="2">
+                            <button name="action_see_attachments_perjanjian" type="object" icon="fa-files-o"/>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+     </data>
+</odoo>

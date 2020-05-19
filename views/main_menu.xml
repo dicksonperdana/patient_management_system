@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>    
+        <menuitem id="main_menu_hospital_management" name="Patient Management"/>
+        <menuitem id="menu_patients" string="Patients" name="Patients" parent="main_menu_hospital_management" sequence="0"
+                  groups="patient_management_system.doctor_group,patient_management_system.nurse_group,patient_management_system.cashier_group,patient_management_system.admin_group" />
+        <menuitem id="menu_patients_medical_record" string="Medical Record" name="Medical Record" parent="main_menu_hospital_management" sequence="2"
+                  groups="patient_management_system.doctor_group,patient_management_system.nurse_group"/>
+        <menuitem id="menu_account_record" string="Cashier" name="Cashier" parent="main_menu_hospital_management" sequence="3"
+                  groups="patient_management_system.cashier_group"/>
+        <menuitem id="menu_hospital_appointment" string="Appointment" name="Appointment" parent="main_menu_hospital_management" sequence="1"/>
+<!--        <menuitem id="menu_hospital_appointment" string="Appointment" name="Appointment" parent="main_menu_hospital_management" sequence="1"-->
+<!--                  groups="patient_management_system.doctor_group,patient_management_system.nurse_group,patient_management_system.admin_group" />-->
+        <menuitem id="menu_configuration" string="Configuration" name="Configuration" parent="main_menu_hospital_management" sequence="4"
+                  groups="patient_management_system.sys_admin_group"/>
+    </data>
+</odoo>

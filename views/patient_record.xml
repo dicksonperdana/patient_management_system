@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="patient_tree" model="ir.ui.view">
+        <field name="name">patient.record.tree</field>
+        <field name="model">patient.record</field>
+        <field name="arch" type="xml">
+            <tree string="Patient">
+                <field name="no_rm"></field>
+                <field name="patient_id"></field>
+                <field name="sex"/>
+                <field name="patient_age"/>
+                <field name="job_status"/>
+                <field name="address"/>
+            </tree>
+        </field>
+    </record>
+    <!-- form view -->
+    <record id="patient_form" model="ir.ui.view">
+        <field name="name">patient.record.form</field>
+        <field name="model">patient.record</field>
+        <field name="arch" type="xml">
+            <form string="Patient">
+                <header>
+                    <!--                    <button name="check_user_currency" type="object" string="Check Currency" class="oe_highlight"/>-->
+                </header>
+                <sheet>
+
+                    <div class="oe_button_box" name="button_box">
+                        <button name="open_patient_appointment" type="object" class="oe_stat_button" icon="fa-calendar"
+                                groups="patient_management_system.doctor_group,patient_management_system.nurse_group,patient_management_system.admin_group">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="appointment_count" modifiers="{'readonly': true}"/>
+                                </span>
+                                <span class="o_stat_text">Appointment</span>
+                            </div>
+                        </button>
+
+                        <button name="open_outpatient_record" type="object" class="oe_stat_button" icon="fa-archive"
+                                groups="patient_management_system.doctor_group,patient_management_system.nurse_group">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="outpatient_record_count" modifiers="{'readonly': true}"/>
+                                </span>
+                                <span class="o_stat_text">Medical Record</span>
+                            </div>
+                        </button>
+
+                        <button type="object"
+                                class="oe_stat_button"
+                                id="invoice_button"
+                                icon="fa-pencil-square-o"
+                                name="open_invoice_record"
+                                context="{'default_partner_id': 22}"
+                                groups="patient_management_system.cashier_group">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="total_invoiced" widget='monetary'
+                                           options="{'currency_field': 'currency_id'}"/>
+                                </span>
+                                <span class="o_stat_text">Invoiced</span>
+                            </div>
+                        </button>
+                    </div>
+                    <field name="image" nolabel="1"
+                           class="oe_left oe_avatar" img_width="120"
+                           img_height="120" width="120" height="120"
+                           widget="image"/>
+                    <div class="oe_title">
+                        <div class="oe_edit_only">
+                            <!-- <label for="patient_id" /> -->
+                        </div>
+                        <h1>
+                            <field style="width: 30%" name="no_rm"
+                                   default_focus="1"/>
+                        </h1>
+                        <h1>
+                            <field style="width: 70%" name="patient_id"
+                                   default_focus="1" placeholder="Patient Name"
+                                   context="{'default_patient': True,'default_person': True}"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="patient_citizen_id"/>
+                            <field name="birth_place"/>
+                            <field name="date_of_birth"/>
+                            <field name="patient_age" readonly="1"/>
+                            <field name="sex"/>
+                            <field name="religion"/>
+                            <field name="marital"/>
+                            <field name="mother_name"/>
+                            <field name="education"/>
+                            <field name="job_status"/>
+                            <field name="phone"/>
+                            <field name="nationality"/>
+                        </group>
+                        <group>
+                            <field name="blood_type"/>
+                            <field name="address"/>
+                            <field name="country"/>
+                            <field name="provence"/>
+                            <field name="region"/>
+                            <field name="district"/>
+                            <field name="currency_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="notes"></field>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <!--    kanban-->
+    <record model="ir.ui.view" id="hospital_patient_kanban_view">
+        <field name="name">patient.record.kanban</field>
+        <field name="model">patient.record</field>
+        <field name="arch" type="xml">
+            <kanban class="o_res_partner_kanban">
+                <field name="no_rm"/>
+                <field name="patient_id"/>
+                <field name="patient_age"/>
+                <field name="sex"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_patient_record_kanban">
+                            <div class="oe_kanban_details">
+                                <strong class="oe_partner_heading">
+                                    <field name="no_rm"/>
+                                </strong>
+                                <ul>
+                                    <li>Nama :
+                                        <field name="patient_id"/>
+                                    </li>
+                                    <li>Umur :
+                                        <field name="patient_age"/>
+                                    </li>
+                                    <li>Kelamin :
+                                        <field name="sex"/>
+                                    </li>
+                                </ul>
+                                <div class="oe_kanban_partner_links"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <!-- data view -->
+    <record id="action_patient" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">patient.record</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Create First Patient!
+            </p>
+        </field>
+    </record>
+
+    <record id="action_patient_registration_form" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">patient.record</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+    </record>
+        Kanban
+
+    <menuitem id="hospital_patient_record" name="Patient Record" parent="menu_patients" action="action_patient"
+              sequence="2"
+              groups="patient_management_system.doctor_group,patient_management_system.nurse_group,patient_management_system.cashier_group,patient_management_system.admin_group"/>
+    <menuitem id="hospital_patient_registration_form" name="Patient Registration" parent="menu_patients"
+              action="action_patient_registration_form" sequence="1" groups="patient_management_system.admin_group"/>
+</odoo>

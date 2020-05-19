@@ -1,0 +1,12 @@
+<openerp>
+    <data>
+        <report
+            id="report_print_appointment_card"
+            model="hospital.appointment"
+            report_type="qweb-pdf"
+            string="Appointment Card"
+            name="patient_management_system.report_appointment_card"
+            file="patient_management_system.report_appointment_card"
+            />
+    </data>
+</openerp>
